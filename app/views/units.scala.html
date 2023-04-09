@@ -1,0 +1,17 @@
+@(units: Seq[SIUnit])(implicit messages: Messages, request: Request[AnyContent])
+
+@import helper._
+
+@main("Units") {
+<section id="content">
+	<table>
+		@for(unit <- units) {
+		<tr>
+			<td><a href="">@unit.symbol</a></td>
+			<td>@unit.name</td>
+			<td>@unit.name_fr</td>
+		</tr>
+		}
+	</table>
+</section>
+}
