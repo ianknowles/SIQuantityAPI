@@ -29,7 +29,7 @@ class QuantityRepository @Inject()(@NamedDatabase("SI") protected val dbConfigPr
 
 	private val units = TableQuery[UnitTable]
 
-	def list(): Future[Seq[SIUnit]] = db.run {
+	def list: Future[Seq[SIUnit]] = db.run {
 		units.result
 	}
 }
