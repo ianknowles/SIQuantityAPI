@@ -29,7 +29,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
-			contentAsString(units) must include ("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render the units table from the application" in {
@@ -38,7 +38,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render the units table from the router" in {
@@ -47,7 +47,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 	}
 	"QuantityController /units endpoint" should {
@@ -58,7 +58,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render /units/json as JSON" in {
@@ -67,7 +67,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render /units as JSON when the client accepts only JSON" in {
@@ -76,7 +76,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render /units as JSON when the client prefers JSON" in {
@@ -85,7 +85,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render /units as HTML when the client accepts only HTML" in {
@@ -94,7 +94,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
 		"render /units as HTML when the client prefers HTML" in {
@@ -103,7 +103,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
-			contentAsString(units) must include("second")
+			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 	}
 	"QuantityController /units selector" should {
