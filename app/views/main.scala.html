@@ -4,10 +4,10 @@
  * two arguments, a `String` for the title of the page and an `Html`
  * object to insert into the body of the page.
  *@
-@(title: String)(content: Html)
+@(title: String)(content: Html)(implicit messages: Messages)
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang=@messages.lang.code>
     <head>
         @* Here's where we render the page title `String`. *@
         <title>@title</title>
