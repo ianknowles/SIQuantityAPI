@@ -32,4 +32,8 @@ class QuantityRepository @Inject()(@NamedDatabase("SI") protected val dbConfigPr
 	def list: Future[Seq[SIUnit]] = db.run {
 		units.result
 	}
+
+	def findBySymbol(symbol: String): Future[Option[SIUnit]] = db.run {
+		units.filter(_.symbol === symbol).result.headOption
+	}
 }

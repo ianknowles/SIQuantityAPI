@@ -106,4 +106,127 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentAsString(units) must include("second")
 		}
 	}
+	"QuantityController /units selector" should {
+
+		"/units/S returns NOT FOUND for non-existent unit S" in {
+			val request = FakeRequest(GET, "/units/S").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe NOT_FOUND
+		}
+
+		"/units/a returns NOT FOUND for non-existent unit a" in {
+			val request = FakeRequest(GET, "/units/a").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe NOT_FOUND
+		}
+
+		"/units/a returns NOT FOUND for non-existent unit b" in {
+			val request = FakeRequest(GET, "/units/b").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe NOT_FOUND
+		}
+
+		"render /units/s as JSON when the client accepts only JSON" in {
+			val request = FakeRequest(GET, "/units/s").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
+			contentAsString(units) must (include("second") and include("seconde") and not include "metre" and not include "mètre")
+		}
+
+		"render /units/s as HTML when the client accepts only HTML" in {
+			val request = FakeRequest(GET, "/units/s").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "text/html", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
+			contentAsString(units) must (include("<html lang=\"en\">") and include("second") and include("seconde") and not include("metre") and not include("mètre"))
+		}
+
+		"render /units/m as JSON when the client accepts only JSON" in {
+			val request = FakeRequest(GET, "/units/m").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
+			contentAsString(units) must (not include("second") and not include("seconde") and include("metre") and include("mètre"))
+		}
+
+		"render /units/m as HTML when the client accepts only HTML" in {
+			val request = FakeRequest(GET, "/units/m").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "text/html", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
+			contentAsString(units) must (include("<html lang=\"en\">") and not include("second") and not include("seconde") and include("metre") and include("mètre"))
+		}
+
+		"render /units/m/name as JSON when the client accepts only JSON" in {
+			val request = FakeRequest(GET, "/units/m/name").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en")
+			contentAsString(units) must (not include("second") and not include("seconde") and include("metre") and not include("mètre"))
+		}
+
+		"render /units/m/name as HTML when the client accepts only HTML" in {
+			val request = FakeRequest(GET, "/units/m/name").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "text/html", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en")
+			contentAsString(units) must (include("<html lang=\"en\">") and not include("second") and not include("seconde") and include("metre") and not include("mètre"))
+		}
+
+		"render /units/m/name in French when requested, as JSON when the client accepts only JSON" in {
+			val request = FakeRequest(GET, "/units/m/name").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost", ACCEPT_LANGUAGE -> "fr")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("fr")
+			contentAsString(units) must (not include("second") and not include("seconde") and not include("metre") and include("mètre"))
+		}
+
+		"render /units/m/name in French when requested, as HTML when the client accepts only HTML" in {
+			val request = FakeRequest(GET, "/units/m/name").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "text/html", Http.HeaderNames.HOST -> "localhost", ACCEPT_LANGUAGE -> "fr")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("fr")
+			contentAsString(units) must (include("<html lang=\"fr\">") and not include("second") and not include("seconde") and not include("metre") and include("mètre"))
+		}
+
+		"render /unités/m/nom in French, as JSON when the client accepts only JSON" in {
+			val request = FakeRequest(GET, "/unit%C3%A9s/m/nom").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "application/json", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("fr")
+			contentAsString(units) must (not include("second") and not include("seconde") and not include("metre") and include("mètre"))
+		}
+
+		"render /unités/m/nom in French, as HTML when the client accepts only HTML" in {
+			val request = FakeRequest(GET, "/unit%C3%A9s/m/nom").withHeaders(FakeHeaders(Seq(Http.HeaderNames.ACCEPT -> "text/html", Http.HeaderNames.HOST -> "localhost")))
+			val units = route(app, request).get
+
+			status(units) mustBe OK
+			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("fr")
+			contentAsString(units) must (include("<html lang=\"fr\">") and not include("second") and not include("seconde") and not include("metre") and include("mètre"))
+		}
+	}
 }
