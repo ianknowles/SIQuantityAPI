@@ -6,6 +6,7 @@ import org.scalatestplus.play._
 import org.scalatestplus.play.guice._
 import play.api.Configuration
 import play.api.i18n.MessagesApi
+import play.api.libs.json.{JsArray, JsObject, JsString}
 import play.api.test.Helpers._
 import play.api.test._
 import play.mvc.Http
@@ -68,6 +69,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
+			contentAsJson(units) mustBe a[JsArray]
 		}
 
 		"render /units as JSON when the client accepts only JSON" in {
@@ -77,6 +79,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
+			contentAsJson(units) mustBe a[JsArray]
 		}
 
 		"render /units as JSON when the client prefers JSON" in {
@@ -86,6 +89,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
+			contentAsJson(units) mustBe a[JsArray]
 		}
 
 		"render /units as HTML when the client accepts only HTML" in {
@@ -137,6 +141,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentType(units) mustBe Some("application/json")
 			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("seconde") and not include "metre" and not include "mètre")
+			contentAsJson(units) mustBe a[JsObject]
 		}
 
 		"render /units/s as HTML when the client accepts only HTML" in {
@@ -157,6 +162,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentType(units) mustBe Some("application/json")
 			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (not include("second") and not include("seconde") and include("metre") and include("mètre"))
+			contentAsJson(units) mustBe a[JsObject]
 		}
 
 		"render /units/m as HTML when the client accepts only HTML" in {
@@ -177,6 +183,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentType(units) mustBe Some("application/json")
 			header(CONTENT_LANGUAGE, units) mustBe Some("en")
 			contentAsString(units) must (not include("second") and not include("seconde") and include("metre") and not include("mètre"))
+			contentAsJson(units) mustBe a[JsString]
 		}
 
 		"render /units/m/name as HTML when the client accepts only HTML" in {
@@ -197,6 +204,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentType(units) mustBe Some("application/json")
 			header(CONTENT_LANGUAGE, units) mustBe Some("fr")
 			contentAsString(units) must (not include("second") and not include("seconde") and not include("metre") and include("mètre"))
+			contentAsJson(units) mustBe a[JsString]
 		}
 
 		"render /units/m/name in French when requested, as HTML when the client accepts only HTML" in {
@@ -217,6 +225,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentType(units) mustBe Some("application/json")
 			header(CONTENT_LANGUAGE, units) mustBe Some("fr")
 			contentAsString(units) must (not include("second") and not include("seconde") and not include("metre") and include("mètre"))
+			contentAsJson(units) mustBe a[JsString]
 		}
 
 		"render /unités/m/nom in French, as HTML when the client accepts only HTML" in {
