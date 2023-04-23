@@ -2,14 +2,19 @@
 
 @import helper._
 
-@main("Units") {
+@main(messages("units.title")) {
 <section id="content">
 	<table>
+		<tr>
+			<th>@messages("unit.symbol")</th>
+			<th>@messages("unit.name")</th>
+			<th>@messages("unit.name_fr")</th>
+		</tr>
 		@for(unit <- units) {
 		<tr>
-			<td><a href="">@unit.symbol</a></td>
-			<td>@unit.name</td>
-			<td>@unit.name_fr</td>
+			<td><a href="@unit.relativeIRI">@unit.symbol</a></td>
+			<td lang="en">@unit.name</td>
+			<td lang="fr">@unit.name_fr</td>
 		</tr>
 		}
 	</table>

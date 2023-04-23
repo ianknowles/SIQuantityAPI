@@ -1,0 +1,6 @@
+# https://www.playframework.com/documentation/latest/ScalaI18N
+
+units.title=Unités
+unit.symbol=Symbole
+unit.name=Nom (anglais)
+unit.name_fr=Nom
