@@ -53,8 +53,8 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 	}
 	"QuantityController /units endpoint" should {
 
-		"render /units/html as HTML" in {
-			val request = FakeRequest(GET, "/units/html")
+		"render /units.html as HTML" in {
+			val request = FakeRequest(GET, "/units.html")
 			val units = route(app, request).get
 
 			status(units) mustBe OK
@@ -62,8 +62,8 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
-		"render /units/json as JSON" in {
-			val request = FakeRequest(GET, "/units/json")
+		"render /units.json as JSON" in {
+			val request = FakeRequest(GET, "/units.json")
 			val units = route(app, request).get
 
 			status(units) mustBe OK
