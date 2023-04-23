@@ -47,24 +47,28 @@ class QuantityController @Inject()(repo: QuantityRepository,
 		getUnitName(symbol, request.lang)
 	}
 
-	val getUnits: Action[AnyContent] = Action.async { implicit request =>
+	private def renderUnitsAsHtml(units: Seq[SIUnit])(implicit request: Request[AnyContent]): Result = {
+		Ok(views.html.units(units)).withHeaders(CONTENT_LANGUAGE -> "en, fr")
+	}
+
+	private def renderUnitsAsJson(units: Seq[SIUnit]): Result = {
+		Ok(Json.toJson(units)).withHeaders(CONTENT_LANGUAGE -> "en, fr")
+	}
+
+	def getUnits: Action[AnyContent] = Action.async { implicit request =>
 		repo.list.map { units =>
 			render {
-				case Accepts.Html() => Ok(views.html.units(units))
-				case Accepts.Json() => Ok(Json.toJson(units))
+				case Accepts.Html() => renderUnitsAsHtml(units)
+				case Accepts.Json() => renderUnitsAsJson(units)
 			}
 		}
 	}
 
 	def viewUnits: Action[AnyContent] = Action.async { implicit request =>
-		repo.list.map { units =>
-			Ok(views.html.units(units))
-		}
+		repo.list.map(renderUnitsAsHtml)
 	}
 
-	def asJsonUnits: Action[AnyContent] = Action.async { implicit request =>
-		repo.list.map { units =>
-			Ok(Json.toJson(units))
-		}
+	def getUnitsAsJson: Action[AnyContent] = Action.async {
+		repo.list.map(renderUnitsAsJson)
 	}
 }

@@ -59,6 +59,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
@@ -68,6 +69,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 			contentAsJson(units) mustBe a[JsArray]
 		}
@@ -78,6 +80,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 			contentAsJson(units) mustBe a[JsArray]
 		}
@@ -88,6 +91,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("application/json")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 			contentAsJson(units) mustBe a[JsArray]
 		}
@@ -98,6 +102,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 
@@ -107,6 +112,7 @@ class QuantityControllerSpec extends PlaySpec with GuiceOneAppPerTest with Injec
 
 			status(units) mustBe OK
 			contentType(units) mustBe Some("text/html")
+			header(CONTENT_LANGUAGE, units) mustBe Some("en, fr")
 			contentAsString(units) must (include("second") and include("metre") and include("mètre"))
 		}
 	}

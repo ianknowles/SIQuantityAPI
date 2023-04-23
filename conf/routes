@@ -8,7 +8,7 @@ GET     /                           controllers.HomeController.index()
 
 GET     /units                      controllers.QuantityController.getUnits
 GET     /units.html                 controllers.QuantityController.viewUnits
-GET     /units.json                 controllers.QuantityController.asJsonUnits
+GET     /units.json                 controllers.QuantityController.getUnitsAsJson
 
 GET     /units/:id                  controllers.QuantityController.getUnit(id: String)
 GET     /units/:id/name             controllers.QuantityController.getUnitName(id: String)
